@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "firstname": "lea",
+      "lastname": "buende",
+      "id": "23",
+      "pin": "1234",
+      "balance": 23,
+      "fav-currency": null
+    }
+  ]
+}
