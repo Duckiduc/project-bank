@@ -18,7 +18,7 @@ namespace bank_project
                 SQLiteConnection.CreateFile("bankdatabase.sqlite3");
 
                 bankConnection.Open();
-                string sql = "create table clients (guid VARCHAR(50) NOT NULL, lastName VARCHAR(30), firstName VARCHAR(30), pin VARCHAR(4), blocked INT, mainCurrency VARCHAR(3), balance INT, USD INT, EUR INT, JPY INT, GBP INT, AUD INT, CAD INT, CHF INT, CNH INT, SEK INT, NZD INT, CONSTRAINT PK PRIMARY KEY (guid))";
+                string sql = "create table clients (guid VARCHAR(50) NOT NULL, lastName VARCHAR(30), firstName VARCHAR(30), pin VARCHAR(4), blocked INT, mainCurrency VARCHAR(3), balance REAL, USD INT, EUR INT, JPY INT, GBP INT, AUD INT, CAD INT, CHF INT, CNH INT, SEK INT, NZD INT, CONSTRAINT PK PRIMARY KEY (guid))";
 
                 SQLiteCommand command = new SQLiteCommand(sql, bankConnection);
                 command.ExecuteNonQuery();

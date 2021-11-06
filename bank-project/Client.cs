@@ -13,9 +13,11 @@ namespace bank_project
 
         public string pin;
 
+        public bool blocked;
+
         string mainCurrency;
 
-        decimal balance;
+        public decimal balance;
 
         decimal USD;
         decimal EUR;
@@ -44,6 +46,7 @@ namespace bank_project
             this.id = generateGuid();
             this.lastName = setLastName();
             this.firstName = setFirstName();
+            this.pin = setPin();
         }
 
         public string setLastName()
@@ -67,7 +70,6 @@ namespace bank_project
             return firstName;
         }
 
-<<<<<<< HEAD
         public void updateFirstName()
         {
             Console.WriteLine("Enter first name");
@@ -75,11 +77,7 @@ namespace bank_project
             this.firstName = firstName;
         }
 
-        //Secure input: check length and type int
         public string setPin()
-=======
-        public int setPin()
->>>>>>> ee821be72b8901454a5f1f79e5858407dc102d7d
         {
             Console.WriteLine("Enter new pin");
             string pin = Console.ReadLine();
@@ -87,7 +85,6 @@ namespace bank_project
             return pin;
         }
 
-<<<<<<< HEAD
         public void updatePin()
         {
             Console.WriteLine("Enter new pin");
@@ -98,7 +95,7 @@ namespace bank_project
         public void updateBalance()
         {
             Console.WriteLine("Enter balance");
-            decimal balance = Console.Read();
+            decimal balance = Convert.ToDecimal(Console.ReadLine());
             this.balance = balance;
         }
 
@@ -117,8 +114,6 @@ namespace bank_project
             this.mainCurrency = mainCurrency;
         }
 
-=======
->>>>>>> ee821be72b8901454a5f1f79e5858407dc102d7d
         public Guid generateGuid()
         {
             return Guid.NewGuid();
