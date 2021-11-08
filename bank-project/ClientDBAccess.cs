@@ -16,6 +16,16 @@ namespace bank_project
             string mainCurrency = string.Empty;
             decimal balance = 0;
             bool blocked = false;
+            decimal USD = 0;
+            decimal EUR = 0;
+            decimal JPY = 0;
+            decimal GBP = 0;
+            decimal AUD = 0;
+            decimal CAD = 0;
+            decimal CHF = 0;
+            decimal CNH = 0;
+            decimal SEK = 0;
+            decimal NZD = 0;
 
             string query = "SELECT * FROM clients WHERE guid = @guid";
             SQLiteCommand command = new SQLiteCommand(query, databaseObject.bankConnection);
@@ -32,7 +42,6 @@ namespace bank_project
                     firstName = (string)clients["firstName"];
                     pin = (string)clients["pin"];
                     mainCurrency = "USD";
-                    balance = 0;
                     blocked = false;
 
                     try
@@ -44,7 +53,7 @@ namespace bank_project
 
                     try
                     {
-                        balance = (decimal)clients["balance"];
+                        balance = Convert.ToDecimal(clients["balance"]);
                     }
                     catch (Exception ex)
                     { }
@@ -55,17 +64,87 @@ namespace bank_project
                     }
                     catch (Exception ex)
                     { }
+
+                    try
+                    {
+                        USD = Convert.ToDecimal(clients["USD"]);
+                    }
+                    catch (Exception ex)
+                    { }
+
+                    try
+                    {
+                        EUR = Convert.ToDecimal(clients["EUR"]);
+                    }
+                    catch (Exception ex)
+                    { }
+
+                    try
+                    {
+                        JPY = Convert.ToDecimal(clients["JPY"]);
+                    }
+                    catch (Exception ex)
+                    { }
+
+                    try
+                    {
+                        GBP = Convert.ToDecimal(clients["GBP"]);
+                    }
+                    catch (Exception ex)
+                    { }
+
+                    try
+                    {
+                        AUD = Convert.ToDecimal(clients["AUD"]);
+                    }
+                    catch (Exception ex)
+                    { }
+
+                    try
+                    {
+                        CAD = Convert.ToDecimal(clients["CAD"]);
+                    }
+                    catch (Exception ex)
+                    { }
+
+                    try
+                    {
+                        CHF = Convert.ToDecimal(clients["CHF"]);
+                    }
+                    catch (Exception ex)
+                    { }
+
+                    try
+                    {
+                        CNH = Convert.ToDecimal(clients["CNH"]);
+                    }
+                    catch (Exception ex)
+                    { }
+
+                    try
+                    {
+                        SEK = Convert.ToDecimal(clients["SEK"]);
+                    }
+                    catch (Exception ex)
+                    { }
+
+                    try
+                    {
+                        NZD = Convert.ToDecimal(clients["NZD"]);
+                    }
+                    catch (Exception ex)
+                    { }
                 }
             }
 
             databaseObject.CloseConnection();
-            Client client = new Client(guid, lastName, firstName, pin, balance, mainCurrency, blocked);
+            Client client = new Client(guid, lastName, firstName, pin, balance, mainCurrency, blocked, USD, EUR, JPY, GBP, AUD, CAD, CHF, CNH, SEK, NZD);
             return client;
         }
 
         public void BackDatabase(Client client)
         {
-            string query = "UPDATE clients SET `lastName` = @lastName, `firstName` = @firstName, `blocked` = @blocked, `balance` = @balance, `pin` = @pin WHERE `guid` = @guid";
+            string query = "UPDATE clients SET `lastName` = @lastName, `firstName` = @firstName, `blocked` = @blocked, `balance` = @balance, `pin` = @pin, `USD` = @USD, `EUR` = @EUR, `JPY` = @JPY, `GBP` = @GBP, `AUD` = @AUD, `CAD` = @CAD, `CHF` = @CHF, `CNH` = @CNH, `SEK` = @SEK, `NZD` = @NZD WHERE `guid` = @guid";
             SQLiteCommand command = new SQLiteCommand(query, databaseObject.bankConnection);
             databaseObject.OpenConnection();
             command.Parameters.AddWithValue("@guid", client.id.ToString());
@@ -74,6 +153,16 @@ namespace bank_project
             command.Parameters.AddWithValue("@blocked", client.blocked);
             command.Parameters.AddWithValue("@balance", client.balance);
             command.Parameters.AddWithValue("@pin", client.pin);
+            command.Parameters.AddWithValue("@USD", client.USD);
+            command.Parameters.AddWithValue("@EUR", client.EUR);
+            command.Parameters.AddWithValue("@JPY", client.JPY);
+            command.Parameters.AddWithValue("@GBP", client.GBP);
+            command.Parameters.AddWithValue("@AUD", client.AUD);
+            command.Parameters.AddWithValue("@CAD", client.CAD);
+            command.Parameters.AddWithValue("@CHF", client.CHF);
+            command.Parameters.AddWithValue("@CNH", client.CNH);
+            command.Parameters.AddWithValue("@SEK", client.SEK);
+            command.Parameters.AddWithValue("@NZD", client.NZD);
             var result = command.ExecuteNonQuery();
             databaseObject.CloseConnection();
             Console.WriteLine("Rows updated: {0}", result);
@@ -198,6 +287,33 @@ namespace bank_project
             var result = command.ExecuteNonQuery();
             databaseObject.CloseConnection();
             Console.WriteLine("Rows deleted: {0}", result);
+        }
+
+        public bool AuthenticateClient(string id, string pin)
+        {
+            string pinDB = string.Empty;
+            string query = "SELECT * FROM clients WHERE guid = @guid";
+            SQLiteCommand command = new SQLiteCommand(query, databaseObject.bankConnection);
+            databaseObject.OpenConnection();
+            command.Parameters.AddWithValue("@guid", id);
+            SQLiteDataReader clients = command.ExecuteReader();
+            if (clients.HasRows)
+            {
+                while (clients.Read())
+                {
+                    pinDB = (string)clients["pin"];
+                }
+            }
+            databaseObject.CloseConnection();
+
+            if (pin == pinDB)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

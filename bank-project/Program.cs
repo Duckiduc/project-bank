@@ -40,6 +40,8 @@ namespace bank_project
                 else if (choice == 2)
                 {
                     Console.WriteLine("Entering client interface...");
+                    Client client = new Client(true);
+                    client.Authenticate();
                 }
             }
             Console.WriteLine("Terminating...");
