@@ -116,6 +116,11 @@ namespace bank_project
             this.balance = balance;
         }
 
+        public void updateBalance(decimal amount)
+        {
+            this.balance = amount;
+        }
+
         public void updateBlocked()
         {
             Console.WriteLine("Enter balance");
@@ -166,7 +171,6 @@ namespace bank_project
                     if (choice == 1)
                     {
                         Console.WriteLine("Get credentials");
-                        //clientAccess.GetClient(guid);
                         Console.WriteLine("Guid: " + client.id);
                         Console.WriteLine("Last name: " + client.lastName);
                         Console.WriteLine("First name: " + client.firstName);
@@ -186,7 +190,7 @@ namespace bank_project
                         {
                             if (currency == "USD")
                             {
-                                Console.WriteLine(client.USD);
+                                Console.WriteLine(client.balance);
                             }
                             else if (currency == "EUR")
                             {
@@ -232,10 +236,70 @@ namespace bank_project
                     }
                     else if (choice == 4)
                     {
-                        Console.WriteLine("Update client");
-                        Console.WriteLine("Enter client's guid");
-                        string clientGuid = Console.ReadLine();
-                        //DBAccess.UpdateClient(clientGuid);
+                        Console.WriteLine("Add money to currency");
+                        Console.WriteLine("Enter currency symbol from the following list: USD, EUR, JPY, GBP, AUD, CAD, CHF, CNH, SEK, NZD");
+                        string currency = Console.ReadLine();
+                        Console.WriteLine("Enter amount");
+                        decimal amount = Convert.ToDecimal(Console.ReadLine());
+                        if (amount > client.balance)
+                        {
+                            Console.WriteLine("You don't have enough money.");
+                        }
+                        else
+                        {
+                            string[] currencies = { "USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNH", "SEK", "NZD" };
+                            if (currencies.Contains(currency))
+                            {
+                                ApiConnection connection = new ApiConnection();
+                                decimal currencyAmount = connection.AddToCurrency(currency, amount);
+                                decimal newBalance = client.balance - amount;
+                                client.balance = newBalance;
+                                if (currency == "USD")
+                                {
+                                    client.balance += currencyAmount;
+                                }
+                                else if (currency == "EUR")
+                                {
+                                    client.EUR += currencyAmount;
+                                }
+                                else if (currency == "JPY")
+                                {
+                                    client.JPY += currencyAmount;
+                                }
+                                else if (currency == "GBP")
+                                {
+                                    client.GBP += currencyAmount;
+                                }
+                                else if (currency == "AUD")
+                                {
+                                    client.AUD += currencyAmount;
+                                }
+                                else if (currency == "CAD")
+                                {
+                                    client.CAD += currencyAmount;
+                                }
+                                else if (currency == "CHF")
+                                {
+                                    client.CHF += currencyAmount;
+                                }
+                                else if (currency == "CNH")
+                                {
+                                    client.CNH += currencyAmount;
+                                }
+                                else if (currency == "SEK")
+                                {
+                                    client.SEK += currencyAmount;
+                                }
+                                else if (currency == "NZD")
+                                {
+                                    client.NZD += currencyAmount;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wrong currency");
+                            }
+                        }
                     }
                     else if (choice == 5)
                     {
@@ -243,10 +307,9 @@ namespace bank_project
                     }
                     else if (choice == 6)
                     {
-                        Console.WriteLine("Delete client");
+                        Console.WriteLine("Exchange between currencies");
                         Console.WriteLine("Enter client's guid");
                         string clientGuid = Console.ReadLine();
-                        //DBAccess.DeleteClient(clientGuid);
                     }
                 }
                 else
