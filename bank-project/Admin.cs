@@ -65,7 +65,38 @@ namespace bank_project
                 }
                 else
                 {
-                    Console.WriteLine("JSON");
+                    ClientJsonAccess DBAccess = new ClientJsonAccess();
+                    if (choice == 1)
+                    {
+                        Console.WriteLine("Get all users");
+                        DBAccess.GetAll();
+                    }
+                    else if (choice == 2)
+                    {
+                        Console.WriteLine("Create user");
+                        DBAccess.CreateUser();
+                    }
+                    else if (choice == 3)
+                    {
+                        Console.WriteLine("Get client");
+                        Console.WriteLine("Enter client's guid");
+                        string clientGuid = Console.ReadLine();
+                        DBAccess.GetClient(clientGuid);
+                    }
+                    else if (choice == 4)
+                    {
+                        Console.WriteLine("Update client");
+                        Console.WriteLine("Enter client's guid");
+                        string clientGuid = Console.ReadLine();
+                        DBAccess.UpdateClient(clientGuid);
+                    }
+                    else if (choice == 5)
+                    {
+                        Console.WriteLine("Delete client");
+                        Console.WriteLine("Enter client's guid");
+                        string clientGuid = Console.ReadLine();
+                        DBAccess.DeleteClient(clientGuid);
+                    }
                 }
             }
             Console.WriteLine("Terminating...");

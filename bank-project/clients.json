@@ -3,10 +3,11 @@
     {
       "firstname": "lea",
       "lastname": "buende",
-      "id": "23",
+      "id": "45456434-7865-1234-1234-123412341234",
       "pin": "1234",
       "balance": 23,
-      "fav-currency": null
+      "fav-currency": null,
+      "blocked": false
     }
   ]
 }

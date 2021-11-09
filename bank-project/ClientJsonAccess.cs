@@ -35,11 +35,8 @@ namespace bank_project
             {
                 var json = File.ReadAllText(jsonFile);
                 var jsonObj = JObject.Parse(json);
-                Console.WriteLine("ok");
                 var users = jsonObj.GetValue("users") as JArray;
-                Console.WriteLine("ok there");
                 var new_user = JObject.Parse(user);
-                Console.WriteLine("ok here");
 
                 users.Add(new_user);
 
@@ -178,6 +175,65 @@ namespace bank_project
             {
                 throw;
             }
+        }
+
+        public void BackDatabase(Client client)
+        {
+            var json = File.ReadAllText(jsonFile);
+            var jsonObj = JObject.Parse(json);
+            var users = jsonObj.GetValue("users") as JArray;
+            foreach (var user in users)
+            {
+                if (client.id.ToString() == user["id"].ToString())
+                {
+                    user["firstname"] = client.firstName;
+                    user["lastname"] = client.lastName;
+                    user["balance"] = client.balance;
+                    user["fav-currency"] = client.mainCurrency;
+                }
+            }
+        }
+
+        public bool AuthenticateClient(string guid, string pin)
+        {
+            var json = File.ReadAllText(jsonFile);
+            var jsonObj = JObject.Parse(json);
+            var users = jsonObj.GetValue("users") as JArray;
+            var exists = false;
+            foreach (var user in users)
+            {
+                if(user["id"].ToString()==guid)
+                {
+                    if (user["pin"].ToString() == pin)
+                    {
+                        exists = true;
+                    }
+                }
+            }
+
+            return exists;
+        }
+
+        public Client ParseClient(string id)
+        {
+            var json = File.ReadAllText(jsonFile);
+            var jsonObj = JObject.Parse(json);
+            var users = jsonObj.GetValue("users") as JArray;
+            Client client = new Client();
+            foreach (var user in users)
+            {
+                if (user["id"].ToString() == id)
+                {
+                    client.id = Guid.Parse(user["id"].ToString());
+                    client.firstName = user["firstname"].ToString();
+                    client.lastName = user["lastname"].ToString();
+                    client.balance = Convert.ToDecimal(user["balance"]);
+                    client.mainCurrency = user["fav-currency"].ToString();
+
+                }
+            }
+
+            return client;
         }
 
         Client IClientDataAccess.ParseClient(string id)

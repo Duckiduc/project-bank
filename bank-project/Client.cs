@@ -116,11 +116,6 @@ namespace bank_project
             this.balance = balance;
         }
 
-        public void updateBalance(decimal amount)
-        {
-            this.balance = amount;
-        }
-
         public void updateBlocked()
         {
             Console.WriteLine("Enter balance");
