@@ -309,7 +309,153 @@ namespace bank_project
                 }
                 else
                 {
-                    Console.WriteLine("JSON");
+                    ClientJsonAccess jsonAccess = new ClientJsonAccess();
+                    Client jsonClient = jsonAccess.ParseClient(guid);
+
+                    if (choice == 1)
+                    {
+                        Console.WriteLine("Get credentials");
+                        Console.WriteLine("Guid: " + jsonClient.id);
+                        Console.WriteLine("Last name: " + jsonClient.lastName);
+                        Console.WriteLine("First name: " + jsonClient.firstName);
+                    }
+                    else if (choice == 2)
+                    {
+                        Console.WriteLine("View balance");
+                        Console.WriteLine("Balance: $" + jsonClient.balance);
+                    }
+                    else if (choice == 3)
+                    {
+                        string[] currencies = { "USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNH", "SEK", "NZD" };
+                        Console.WriteLine("Retrieve money from currency");
+                        Console.WriteLine("Enter currency symbol from the following list: USD, EUR, JPY, GBP, AUD, CAD, CHF, CNH, SEK, NZD");
+                        string currency = Console.ReadLine();
+                        if (currencies.Contains(currency))
+                        {
+                            if (currency == "USD")
+                            {
+                                Console.WriteLine(jsonClient.balance);
+                            }
+                            else if (currency == "EUR")
+                            {
+                                Console.WriteLine(jsonClient.EUR);
+                            }
+                            else if (currency == "JPY")
+                            {
+                                Console.WriteLine(jsonClient.JPY);
+                            }
+                            else if (currency == "GBP")
+                            {
+                                Console.WriteLine(jsonClient.GBP);
+                            }
+                            else if (currency == "AUD")
+                            {
+                                Console.WriteLine(jsonClient.AUD);
+                            }
+                            else if (currency == "CAD")
+                            {
+                                Console.WriteLine(jsonClient.CAD);
+                            }
+                            else if (currency == "CHF")
+                            {
+                                Console.WriteLine(jsonClient.CHF);
+                            }
+                            else if (currency == "CNH")
+                            {
+                                Console.WriteLine(jsonClient.CNH);
+                            }
+                            else if (currency == "SEK")
+                            {
+                                Console.WriteLine(jsonClient.SEK);
+                            }
+                            else if (currency == "NZD")
+                            {
+                                Console.WriteLine(jsonClient.NZD);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong currency");
+                        }
+                    }
+                    else if (choice == 4)
+                    {
+                        Console.WriteLine("Add money to currency");
+                        Console.WriteLine("Enter currency symbol from the following list: USD, EUR, JPY, GBP, AUD, CAD, CHF, CNH, SEK, NZD");
+                        string currency = Console.ReadLine();
+                        Console.WriteLine("Enter amount");
+                        decimal amount = Convert.ToDecimal(Console.ReadLine());
+                        if (amount > client.balance)
+                        {
+                            Console.WriteLine("You don't have enough money.");
+                        }
+                        else
+                        {
+                            string[] currencies = { "USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNH", "SEK", "NZD" };
+                            if (currencies.Contains(currency))
+                            {
+                                ApiConnection connection = new ApiConnection();
+                                decimal currencyAmount = connection.AddToCurrency(currency, amount);
+                                decimal newBalance = jsonClient.balance - amount;
+                                jsonClient.balance = newBalance;
+                                if (currency == "USD")
+                                {
+                                    jsonClient.balance += currencyAmount;
+                                }
+                                else if (currency == "EUR")
+                                {
+                                    jsonClient.EUR += currencyAmount;
+                                }
+                                else if (currency == "JPY")
+                                {
+                                    jsonClient.JPY += currencyAmount;
+                                }
+                                else if (currency == "GBP")
+                                {
+                                    jsonClient.GBP += currencyAmount;
+                                }
+                                else if (currency == "AUD")
+                                {
+                                    jsonClient.AUD += currencyAmount;
+                                }
+                                else if (currency == "CAD")
+                                {
+                                    jsonClient.CAD += currencyAmount;
+                                }
+                                else if (currency == "CHF")
+                                {
+                                    jsonClient.CHF += currencyAmount;
+                                }
+                                else if (currency == "CNH")
+                                {
+                                    jsonClient.CNH += currencyAmount;
+                                }
+                                else if (currency == "SEK")
+                                {
+                                    jsonClient.SEK += currencyAmount;
+                                }
+                                else if (currency == "NZD")
+                                {
+                                    jsonClient.NZD += currencyAmount;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wrong currency");
+                            }
+                        }
+                    }
+                    else if (choice == 5)
+                    {
+                        jsonClient.updatePin();
+                    }
+                    else if (choice == 6)
+                    {
+                        Console.WriteLine("Exchange between currencies");
+                        Console.WriteLine("Enter client's guid");
+                        string clientGuid = Console.ReadLine();
+                    }
+                    clientAccess.BackDatabase(jsonClient);
                 }
                 clientAccess.BackDatabase(client);
             }
